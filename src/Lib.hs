@@ -13,11 +13,10 @@ data Pendulum = Pendulum { mass   :: Float
 data DoublePendulumSystem = DPS { pendulum1 :: Pendulum
                                 , pendulum2 :: Pendulum
                                 , g         :: Float
-                                , t         :: Float
                                 , dt        :: Float } deriving (Show, Eq)
 
 derivatives :: DoublePendulumSystem -> [Float]
-derivatives (DPS (Pendulum m1 l1 theta1 omega1 _ _) (Pendulum m2 l2 theta2 omega2 _ _) g _ _) = [theta1', omega1', theta2', omega2']
+derivatives (DPS (Pendulum m1 l1 theta1 omega1 _ _) (Pendulum m2 l2 theta2 omega2 _ _) g _) = [theta1', omega1', theta2', omega2']
     where 
         theta1' = omega1
         theta2' = omega2
@@ -39,8 +38,8 @@ derivatives (DPS (Pendulum m1 l1 theta1 omega1 _ _) (Pendulum m2 l2 theta2 omega
 rk4PendulumSolver :: DoublePendulumSystem -> DoublePendulumSystem
 rk4PendulumSolver ps = mkps yo
     where
-        (DPS (Pendulum m1 l1 theta1 omega1 (ox1, oy1) p1) (Pendulum m2 l2 theta2 omega2 (ox2, oy2) p2) g t dt) = ps
-        mkps [a,b,c,d] = DPS (Pendulum m1 l1 (normalizeAngle a) b (nx1, ny1) np1) (Pendulum m2 l2 (normalizeAngle c) d (nx2, ny2) np2) g (t + dt) dt
+        (DPS (Pendulum m1 l1 theta1 omega1 (ox1, oy1) p1) (Pendulum m2 l2 theta2 omega2 (ox2, oy2) p2) g dt) = ps
+        mkps [a,b,c,d] = DPS (Pendulum m1 l1 a b (nx1, ny1) np1) (Pendulum m2 l2 c d (nx2, ny2) np2) g dt
         yi = [theta1, omega1, theta2, omega2]
         k1 = map (* dt) (derivatives ps)
         k2 = map (* dt) (derivatives (mkps $ zipWith (+) yi (map (* 0.5) k1)))
@@ -59,7 +58,7 @@ rk4PendulumSolver ps = mkps yo
         np2 = color magenta (line [(ox2, oy2), (nx2, ny2)]) : take 100 p2
 
 dpsdrawer :: DoublePendulumSystem -> Picture
-dpsdrawer (DPS (Pendulum m1 l1 t1 _ (a, b) p1) (Pendulum m2 l2 t2 _ (c, d) p2) _ _ _) = 
+dpsdrawer (DPS (Pendulum m1 l1 t1 _ (a, b) p1) (Pendulum m2 l2 t2 _ (c, d) p2) _ _) = 
     pictures ([ color white $ line [(0, 0), (a, b)]
               , color white $ line [(a, b), (c, d)]
               , color yellow $ circleSolid 3
@@ -70,7 +69,7 @@ anim [m1, l1, t1, o1, m2, l2, t2, o2] =
     simulate (InWindow "DPS" (ceiling $ (l1 + l2) * 220, ceiling $ (l1 + l2) * 220) (10, 10)) 
              black 
              200 
-             (DPS (Pendulum m1 l1 t1 o1 (nx1,ny1) []) (Pendulum m2 l2 t2 o2 (nx2,ny2) []) 9.81 0 (1/200)) 
+             (DPS (Pendulum m1 l1 t1 o1 (nx1,ny1) []) (Pendulum m2 l2 t2 o2 (nx2,ny2) []) 9.81 (1/200)) 
              dpsdrawer 
              (\_ _ -> rk4PendulumSolver)
     where
