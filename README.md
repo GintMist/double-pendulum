@@ -1,7 +1,7 @@
 # double-pendulum
 Simple double pendulum sim using RK4 for solving differential equations
 
-#Usage
+# Usage
 
 -stack build
 -stack exec double-pendulum-exe m1 l1 theta1 omega1 m2 l2 theta2 omega2
