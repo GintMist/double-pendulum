@@ -14,3 +14,6 @@ l1, l2 = length in meters
 theta1, theta2 = angle in radians
 
 omega1, omega2 = angular velocity in rad/s
+
+
+![](/ss.png?raw=true)
