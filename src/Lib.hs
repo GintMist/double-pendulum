@@ -1,7 +1,6 @@
 module Lib where
 
 import Graphics.Gloss
-import Graphics.Gloss.Geometry.Angle
 
 data Pendulum = Pendulum { mass   :: Float
                          , length :: Float
