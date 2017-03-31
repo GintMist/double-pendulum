@@ -58,11 +58,11 @@ rk4PendulumSolver ps = mkps yo
 
 dpsdrawer :: DoublePendulumSystem -> Picture
 dpsdrawer (DPS (Pendulum m1 l1 t1 _ (a, b) p1) (Pendulum m2 l2 t2 _ (c, d) p2) _ _) = 
-    pictures ([ color white $ line [(0, 0), (a, b)]
-              , color white $ line [(a, b), (c, d)]
-              , color yellow $ circleSolid 3
-              , translate a b $ color orange $ circleSolid (5*m1)
-              , translate c d $ color orange $ circleSolid (5*m2) ] ++ p1 ++ p2)
+    pictures (p1 ++ p2 ++ [ color white $ line [(0, 0), (a, b)]
+                          , color white $ line [(a, b), (c, d)]
+                          , color yellow $ circleSolid 3
+                          , translate a b $ color orange $ circleSolid (5*m1)
+                          , translate c d $ color orange $ circleSolid (5*m2) ])
 
 anim [m1, l1, t1, o1, m2, l2, t2, o2] = 
     simulate (InWindow "DPS" (ceiling $ (l1 + l2) * 220, ceiling $ (l1 + l2) * 220) (10, 10)) 
