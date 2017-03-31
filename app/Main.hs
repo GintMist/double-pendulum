@@ -1,8 +1,9 @@
 module Main where
-import Lib
-import System.Environment (getArgs)
+import           Lib
+import           System.Environment (getArgs)
 
+main :: IO ()
 main = getArgs >>= (anim . fmap readF)
-    where
-        readF :: String -> Float
-        readF = read
+  where
+    readF :: String -> Float
+    readF = read
