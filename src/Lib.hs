@@ -64,11 +64,11 @@ dpsdrawer (DPS (Pendulum m1 l1 t1 _ (a, b) p1) (Pendulum m2 l2 t2 _ (c, d) p2) _
                           , translate a b $ color orange $ circleSolid (5*m1)
                           , translate c d $ color orange $ circleSolid (5*m2) ])
 
-anim [m1, l1, t1, o1, m2, l2, t2, o2] = 
+anim [m1, l1, t1, o1, m2, l2, t2, o2, g] = 
     simulate (InWindow "DPS" (ceiling $ (l1 + l2) * 220, ceiling $ (l1 + l2) * 220) (10, 10)) 
              black 
              200 
-             (DPS (Pendulum m1 l1 t1 o1 (nx1,ny1) []) (Pendulum m2 l2 t2 o2 (nx2,ny2) []) 9.81 (1/200)) 
+             (DPS (Pendulum m1 l1 t1 o1 (nx1,ny1) []) (Pendulum m2 l2 t2 o2 (nx2,ny2) []) g (1/200)) 
              dpsdrawer 
              (\_ _ -> rk4PendulumSolver)
     where
